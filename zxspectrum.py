@@ -33,7 +33,8 @@ def save_wave_file(filename, audio_data, sample_rate):
         wf.writeframes((audio_data * 32767).astype(np.int16).tobytes())
 
 # Solicita o nome do arquivo de texto ao usuário
-filename = input("Digite o nome do arquivo de texto: ")
+print("\x1bc\x1b[47;34m")
+filename = input("text file: ")
 
 # Lê o arquivo de texto
 with open(filename, 'r') as f:
