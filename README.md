@@ -1,5 +1,5 @@
 # Comunication.output.line
 Output line analog
-only compile text files
+compile binary files and zip files
 
 sound lab
