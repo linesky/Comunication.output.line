@@ -40,6 +40,11 @@ filename = input("text file: ")
 with open(filename, 'r') as f:
     text = f.read()
 
+ff=""
+for a in range(127):
+    ff=ff+str(chr(85))
+ff=ff+str(chr(0))
+text=ff+text
 # Converte o texto para binário
 binary_data = text_to_binary(text)
 
