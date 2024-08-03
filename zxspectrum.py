@@ -1,11 +1,25 @@
 import numpy as np
-import sounddevice as sd
 import wave
+import sounddevice as sd
 
 def text_to_binary(text):
     """Converte o texto em uma string binária."""
     binary_string = ''.join(format(ord(char), '08b') for char in text)
     return binary_string
+
+def file_to_binary(file_path):
+    """Lê um arquivo binário e converte para uma string binária."""
+    with open(file_path, 'rb') as f:
+        binary_data = f.read()
+    binary_string = ''.join(format(byte, '08b') for byte in binary_data)
+    return binary_string
+
+def combine_text_and_file(text, file_path):
+    """Combina o texto binário com os dados binários do arquivo."""
+    text_binary = text_to_binary(text)
+    file_binary = file_to_binary(file_path)
+    combined_binary = text_binary + file_binary
+    return combined_binary
 
 def generate_zx_spectrum_audio(binary_data, sample_rate=44100):
     """Gera um sinal de áudio que representa os dados binários no formato ZX Spectrum."""
@@ -32,32 +46,34 @@ def save_wave_file(filename, audio_data, sample_rate):
         wf.setframerate(sample_rate)
         wf.writeframes((audio_data * 32767).astype(np.int16).tobytes())
 
-# Solicita o nome do arquivo de texto ao usuário
-print("\x1bc\x1b[47;34m")
-filename = input("text file: ")
+def main():
+    # Solicita o nome do arquivo binário ao usuário
+    print("\x1bc\x1b[47;34m")
+    ff=""
+    for a in range(127):
+         ff=ff+str(chr(85))
+    ff=ff+str(chr(0))
+    text=ff
+    file_path = input("Digite o nome do arquivo binário: ")
 
-# Lê o arquivo de texto
-with open(filename, 'r') as f:
-    text = f.read()
+    # Combina o texto com o arquivo binário
+    combined_binary = combine_text_and_file(text, file_path)
 
-ff=""
-for a in range(127):
-    ff=ff+str(chr(85))
-ff=ff+str(chr(0))
-text=ff+text
-# Converte o texto para binário
-binary_data = text_to_binary(text)
+    # Gera o áudio no formato ZX Spectrum
+    audio_data = generate_zx_spectrum_audio(combined_binary)
 
-# Gera o áudio no formato ZX Spectrum
-audio_data = generate_zx_spectrum_audio(binary_data)
+    # Toca o áudio
+    sd.play(audio_data, samplerate=44100)
+    sd.wait()
 
-# Toca o áudio
-sd.play(audio_data, samplerate=44100)
-sd.wait()
+    # Salva o áudio em um arquivo WAV
+    output_filename = "output.wav"
+    save_wave_file(output_filename, audio_data, sample_rate=44100)
 
-# Salva o áudio em um arquivo WAV
-output_filename = "output.wav"
-save_wave_file(output_filename, audio_data, sample_rate=44100)
+    print(f"Áudio salvo em {output_filename}")
 
-print(f"Áudio salvo em {output_filename}")
+if __name__ == "__main__":
+    main()
+
+
 
