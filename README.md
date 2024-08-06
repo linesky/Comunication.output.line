@@ -1,4 +1,4 @@
-# Comunication.output.line
+# telex.telefax.analog.decoder
 Output line analog
 compile binary files and zip files
 
