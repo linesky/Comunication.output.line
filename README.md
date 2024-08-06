@@ -10,3 +10,5 @@ decompile fax and telefax analog lines and see the format of it at analog sound 
 
 https://en.wikipedia.org/wiki/Windows_Fax_and_Scan
 
+https://en.wikipedia.org/wiki/Windows_Messaging#Microsoft_Fax
+
